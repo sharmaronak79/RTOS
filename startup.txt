@@ -1,0 +1,7 @@
+we should have STM32 developmentboard its a hardware
+
+download and install STM32 workbench which is eclipse based IDE specifacally made for STM microcontroller from st.com
+
+for working this GUI of IDE , we need to have upper version of JRE or JDK
+
+Free RTOS from freertos.org
