@@ -1,0 +1,6 @@
+taskYIELD() is used to request a context switch to another task.
+However, if there are no other tasks at a higher or equal priority to the task that calls taskYIELD() 
+then the RTOS scheduler will simply select the task that called taskYIELD() to run again.
+
+If configUSE_PREEMPTION is set to 1 then the RTOS scheduler will always be running 
+the highest priority task that is able to run, so calling taskYIELD() will never result in a switch to a higher priority task.
