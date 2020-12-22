@@ -1,0 +1,37 @@
+xTaskCreate
+[Task Creation]
+task. h
+
+ BaseType_t xTaskCreate(    TaskFunction_t pvTaskCode,
+                            const char * const pcName,
+                            configSTACK_DEPTH_TYPE usStackDepth,
+                            void *pvParameters,
+                            UBaseType_t uxPriority,
+                            TaskHandle_t *pxCreatedTask
+                          );
+
+Create a new task and add it to the list of tasks that are ready to run. configSUPPORT_DYNAMIC_ALLOCATION must be set to 1 in FreeRTOSConfig.h, or left undefined (in which case it will default to 1), for this RTOS API function to be available.
+
+Each task requires RAM that is used to hold the task state, and used by the task as its stack. If a task is created using xTaskCreate() then the required RAM is automatically allocated from the FreeRTOS heap. If a task is created using xTaskCreateStatic() then the RAM is provided by the application writer, so can be statically allocated at compile time. See the Static Vs Dynamic allocation page for more information.
+
+If you are using FreeRTOS-MPU then it is recommended to use xTaskCreateRestricted() in place of xTaskCreate().
+
+Parameters:
+pvTaskCode  	Pointer to the task entry function (just the name of the function that implements the task, see the example below).
+Tasks are normally implemented as an infinite loop, and must never attempt to return or exit from their implementing function. Tasks can however delete themselves.
+
+pcName  	A descriptive name for the task. This is mainly used to facilitate debugging, but can also be used to obtain a task handle.
+The maximum length of a task’s name is set using the configMAX_TASK_NAME_LEN parameter in FreeRTOSConfig.h.
+
+usStackDepth  	The number of words (not bytes!) to allocate for use as the task’s stack. For example, if the stack is 16-bits wide and usStackDepth is 100, then 200 bytes will be allocated for use as the task’s stack. As another example, if the stack is 32-bits wide and usStackDepth is 400 then 1600 bytes will be allocated for use as the task’s stack.
+The stack depth multiplied by the stack width must not exceed the maximum value that can be contained in a variable of type size_t.
+
+See the FAQ How big should the stack be?
+
+pvParameters  	A value that will passed into the created task as the task’s parameter.
+If pvParameters is set to the address of a variable then the variable must still exist when the created task executes – so it is not valid to pass the address of a stack variable.
+
+uxPriority  	The priority at which the created task will execute.
+Systems that include MPU support can optionally create a task in a privileged (system) mode by setting bit portPRIVILEGE_BIT in uxPrriority. For example, to create a privileged task at priority 2 set uxPriority to ( 2 | portPRIVILEGE_BIT ).
+
+pxCreatedTask  	Used to pass a handle to the created task out of the xTaskCreate() function. pxCreatedTask is optional and can be set to NULL.
