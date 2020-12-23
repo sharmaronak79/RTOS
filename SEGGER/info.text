@@ -1,0 +1,9 @@
+Segger System view:
+
+step1: download sytem source and extract it : make some folders and put some files as shown in folder
+step2: Patching FreeRTOS files
+step3: FreeRTOSConfig.h file setting
+step4 : MCU AND PROJECT SPECIFIC SETTING
+step5: Enable the ARM Cortex Mx CycleCounter
+step6: Start the recording of the events
+step7:Compile, Flash and Debug
