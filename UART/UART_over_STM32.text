@@ -1,0 +1,10 @@
+to send message over USART using STM32  with Discovery Board
+
+we have to use TTL or USB serial cable
+ 
+USB dongle -> Discovery Board
+    Tx     ->       pin13 PA3
+    Rx     ->       pin14 PA2
+    GND    ->       GND
+    
+Rest do the same 
