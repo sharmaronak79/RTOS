@@ -1,1 +1,4 @@
 interrupt
+
+TASKS run on thread mode 
+INTERRUPTs run on Handler mode
