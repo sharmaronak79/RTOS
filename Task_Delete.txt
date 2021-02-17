@@ -1,0 +1,1 @@
+Task_Delete() API is used to delet the task
