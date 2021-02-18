@@ -3,3 +3,5 @@ Task_Delete() API is used to delet the task
 We have to pass the task handler of which task we want to delet
 
 If we want to delete a task itself then hen just pass NULL
+
+to see the data or something we print we ahve to use serial connection like USB TTL serial cable and we can use X-CTU software 
