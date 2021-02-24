@@ -19,3 +19,5 @@ NOTE: The idle task is responsible for freeing the RTOS kernel allocated memory 
 See the demo application file death. c for sample code that utilises vTaskDelete ().
 
 
+Parameters:
+xTask 	The handle of the task to be deleted. Passing NULL will cause the calling task to be deleted.
