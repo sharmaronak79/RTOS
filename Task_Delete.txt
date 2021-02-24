@@ -5,3 +5,17 @@ We have to pass the task handler of which task we want to delet
 If we want to delete a task itself then hen just pass NULL
 
 to see the data or something we print we ahve to use serial connection like USB TTL serial cable and we can use X-CTU software 
+
+vTaskDelete
+[Task Creation]
+task. h
+void vTaskDelete( TaskHandle_t xTask );
+INCLUDE_vTaskDelete must be defined as 1 for this function to be available. See the RTOS Configuration documentation for more information.
+
+Remove a task from the RTOS kernels management. The task being deleted will be removed from all ready, blocked, suspended and event lists.
+
+NOTE: The idle task is responsible for freeing the RTOS kernel allocated memory from tasks that have been deleted. It is therefore important that the idle task is not starved of microcontroller processing time if your application makes any calls to vTaskDelete (). Memory allocated by the task code is not automatically freed, and should be freed before the task is deleted.
+
+See the demo application file death. c for sample code that utilises vTaskDelete ().
+
+
