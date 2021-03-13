@@ -1,0 +1,8 @@
+Desuggn a FreeRTOS application which implements the below commands
+LED_ON
+LED_OFF
+LED_TOGGLE_START
+LED_TOGGLE_STOP
+LED_DATETIME_READ
+
+the command shoiuld be sent to the board via UART from the user
