@@ -4,5 +4,12 @@ this is a queue API
 xQueueCreate_t queye1;
 xQueueCreate (10, sizeof(int))
 
+Typedef Struct
+{
+  Int a;
+  Char arry[5];
+} S;
+
+
 
 
