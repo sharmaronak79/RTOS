@@ -12,4 +12,15 @@ Answer:
 
 In this application we hsve used UART2 for communication between STM32 and our PC
 
-Iour case we have used USART2. SO,we have to enable UART2 Interrupt because whatever we will give input that input will be an interrupt
+In our case we have used USART2. SO,we have to enable UART2 Interrupt because whatever we will give input that input will be an interrupt
+
+we also have to enable its NVIC (Nested Vector Interrupt Controller) and also have to give interruopt priority
+
+so,
+
+we have to create two queue Frist
+1. Command Queue 
+2. UART Queue
+
+then also create FOUR Tasks
+
