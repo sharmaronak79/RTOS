@@ -6,3 +6,8 @@ LED_TOGGLE_STOP
 LED_DATETIME_READ
 
 the command shoiuld be sent to the board via UART from the user
+
+
+Answer:
+
+In this application we hsve used UART2 for communication between STM32 and our PC
