@@ -11,3 +11,5 @@ the command shoiuld be sent to the board via UART from the user
 Answer:
 
 In this application we hsve used UART2 for communication between STM32 and our PC
+
+Iour case we have used USART2. SO,we have to enable UART2 Interrupt because whatever we will give input that input will be an interrupt
