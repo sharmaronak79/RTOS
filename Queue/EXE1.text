@@ -23,4 +23,8 @@ we have to create two queue Frist
 2. UART Queue
 
 then also create FOUR Tasks
+For each queue we also have to create its handle
+
+xQueueCreate CommandQueue
+xQueueCreate Uart_queue
 
