@@ -3,7 +3,7 @@
   * @file    main.c
   * @author  Ac6
   * @version V1.0
-  * @date    01-December-2013
+  * @date    25 th of March 2021
   * @brief   Default main function.
   ******************************************************************************
 */
