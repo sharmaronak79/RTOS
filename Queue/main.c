@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    main.c
-  * @author  Ac6
+  * @author  Ronak
   * @version V1.0
   * @date    25 th of March 2021
   * @brief   Default main function.
