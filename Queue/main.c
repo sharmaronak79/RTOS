@@ -3,7 +3,7 @@
   * @file    main.c
   * @author  Ronak
   * @version V1.0
-  * @date    25 th of March 2021
+  * @date    01-December-2013
   * @brief   Default main function.
   ******************************************************************************
 */
@@ -30,6 +30,7 @@ void printmsg(char *msg);
 void prvSetupGPIO(void);
 static void prvSetupUart(void);
 static void prvSetupHardware(void);
+void getArguments(uint8_t *buffer);
 uint8_t getCommandCode(uint8_t *buffer);
 
 //Tasks prototypes
@@ -123,11 +124,11 @@ int main(void)
 	//Lets create led task
 	xTaskCreate(vTask1_menu_display,"Task 1 - Menu",500,NULL,1,&xTaskHandle1);
 
-	xTaskCreate(vTask2_cmd_handling,"Task 2 - Command Handling",500,NULL,1,&xTaskHandle2);
+	xTaskCreate(vTask2_cmd_handling,"Task 2 - Command Handling",500,NULL,2,&xTaskHandle2);
 
-	xTaskCreate(vTask3_cmd_processing,"Task 3 - Command Processing ",500,NULL,1,&xTaskHandle3);
+	xTaskCreate(vTask3_cmd_processing,"Task 3 - Command Processing ",500,NULL,2,&xTaskHandle3);
 
-	xTaskCreate(vTask4_uart_write,"Task 4 - UART write",500,NULL,1,&xTaskHandle4);
+	xTaskCreate(vTask4_uart_write,"Task 4 - UART write",500,NULL,2,&xTaskHandle4);
 
 	//Lets start tghe scheduler
 	vTaskStartScheduler();
@@ -166,7 +167,7 @@ void vTask2_cmd_handling(void *params)
 		command_code = getCommandCode(command_buffer);
 		new_cmd = (APP_CMD_t*)pvPortMalloc(sizeof(APP_CMD_t));
 		new_cmd->COMMAND_NUM = command_code;
-		getArgyuments(new_cmd->COMMAND_ARGS);
+		getArguments(new_cmd->COMMAND_ARGS);
 
 		//send command to command Queue
 		xQueueSend(command_queue,&new_cmd,portMAX_DELAY);
@@ -180,9 +181,11 @@ void vTask3_cmd_processing(void *params)
 	APP_CMD_t *new_cmd;
 	char task_msg[50];
 
+	uint32_t toggle_duration = pdMS_TO_TICKS(500);
+
 	while(1)
 	{
-		xQueueReceive(command_queue,(void*)new_cmd,portMAX_DELAY);
+		xQueueReceive(command_queue,(void*)&new_cmd,portMAX_DELAY);
 
 		if(new_cmd->COMMAND_NUM == LED_ON_COMMAND)
 		{
@@ -194,7 +197,7 @@ void vTask3_cmd_processing(void *params)
 		}
 		else if(new_cmd->COMMAND_NUM == LED_TOGGLE_COMMAND)
 		{
-			led_toggle_start();
+			led_toggle();
 		}
 		else if(new_cmd->COMMAND_NUM == LED_TOGGLE_STOP_COMMAND)
 		{
@@ -204,19 +207,19 @@ void vTask3_cmd_processing(void *params)
 		{
 			read_led_status(task_msg);
 		}
-		else if(new_cmd->COMMAND_NUM == RTC_READ_DATE_TIME_COMMAND)
+		else if(new_cmd->COMMAND_NUM == RTC_READ_DATE_TIME_COMMAND )
 		{
 			read_rtc_info(task_msg);
-		}
-		else
+		}else
 		{
 			print_error_message(task_msg);
 		}
 
+		//lets free the allocated memory for the new command
+		vPortFree(new_cmd);
 
 	}
 }
-
 void vTask4_uart_write(void *params)
 {
 	char *pData = NULL;
@@ -336,36 +339,35 @@ void vApplicationIdleHook()
 
 void USART2_IRQHandler(void)
 {
-	uint8_t data_byte;
-	BaseType_t xHigherPriorityTasWoken = pdFalse;
-	if(USART_GetFlagStatus(USART2,USART_FLAG_RXNE))
+	uint16_t data_byte;
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+	if( USART_GetFlagStatus(USART2,USART_FLAG_RXNE) )
 	{
-		//A DATA byte is received from the user
+		//a data byte is received from the user
 		data_byte = USART_ReceiveData(USART2);
 
-		command_buffer[command_len++] = data_byte & 0xFF ;
+		command_buffer[command_len++] = (data_byte & 0xFF) ;
 
 		if(data_byte == '\r')
 		{
-			//user finished entering data
+			//then user is finished entering the data
 
-			//Reset command_len variable
+			//reset the command_len variable
 			command_len = 0;
 
 			//lets notify the command handling task
+			xTaskNotifyFromISR(xTaskHandle2,0,eNoAction,&xHigherPriorityTaskWoken);
 
-			xTaskNotifyFromISR(xTaskHandle2,0,eNoAction,&xHigherPriorityTasWoken);
-
-
-			xTaskNotifyFromISR(xTaskHandle1,0,eNoAction,&xHigherPriorityTasWoken);
+			xTaskNotifyFromISR(xTaskHandle1,0,eNoAction,&xHigherPriorityTaskWoken);
 		}
 
 	}
 
-	//if the above freeRTOS API wakeup any higher priority task then yield the processor to the
-	//higher priority task wich uis just woken up
+	// if the above freertos apis wake up any higher priority task, then yield the processor to the
+	//higher priority task which is just woken up.
 
-	if(xHigherPriorityTasWoken)
+	if(xHigherPriorityTaskWoken)
 	{
 		taskYIELD();
 	}
@@ -396,21 +398,21 @@ void make_led_off(void)
 
 
 
-void led_toggle(TimerHandle_t xTimer)
+void led_toggle()
 {
 	GPIO_ToggleBits(GPIOD,GPIO_Pin_12);
 }
 
-void led_toggle_start(uint32_t duration)
+void led_toggle_start()
 {
 
-	
+
 }
 
 
 void led_toggle_stop(void)
 {
-	 
+
 }
 
 
@@ -423,7 +425,7 @@ void read_led_status(char *task_msg)
 
 void read_rtc_info(char *task_msg)
 {
-	
+
 
 }
 
