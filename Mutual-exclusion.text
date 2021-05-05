@@ -2,3 +2,8 @@ Mutual exclusion is for synchronization between tasks and interrupt
 
 There are different ways of synchronization 
 Mutex and semaphores 
+
+One more is binary semaphore
+
+
+It is used when there is on shared resources used by different tasks 
