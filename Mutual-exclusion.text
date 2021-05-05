@@ -1,1 +1,4 @@
 Mutual exclusion is for synchronization between tasks and interrupt
+
+There are different ways of synchronization 
+Mutex and semaphores 
