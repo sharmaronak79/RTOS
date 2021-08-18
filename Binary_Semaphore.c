@@ -31,7 +31,7 @@ static void vEmployeeTask( void *pvParameters );
 
 /*-----------------------------------------------------------*/
 
-/* Declare a variable of type xSemaphoreHandle.  This is used to reference the
+/*  Declare a variable of type xSemaphoreHandle.  This is used to reference the
 semaphore that is used to synchronize both manager and employee task */
 xSemaphoreHandle xWork;
 
